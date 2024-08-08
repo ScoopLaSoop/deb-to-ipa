@@ -19,11 +19,15 @@ jobs:
         # Extraire le fichier .deb
         dpkg-deb -X ${{ github.workspace }}/app.deb ${{ github.workspace }}/app
 
+        # Lister le contenu extrait pour vérifier la structure
+        echo "Contenu extrait:"
+        ls -R ${{ github.workspace }}/app
+
         # Créer le dossier Payload
         mkdir -p ${{ github.workspace }}/ipa/Payload
         
-        # Copier le contenu de l'application dans le dossier Payload
-        cp -R ${{ github.workspace }}/app/Applications/* ${{ github.workspace }}/ipa/Payload
+        # Adapter le chemin d'accès en fonction de la structure
+        cp -R ${{ github.workspace }}/app/* ${{ github.workspace }}/ipa/Payload
         
         # Créer le fichier .ipa
         cd ${{ github.workspace }}/ipa
