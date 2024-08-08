@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Convert deb to IPA
       run: |
@@ -26,7 +26,7 @@ jobs:
         # Créer le dossier Payload
         mkdir -p ${{ github.workspace }}/ipa/Payload
         
-        # Adapter le chemin d'accès en fonction de la structure
+        # Adapter le chemin d'accès en fonction de la structure (ajustez ce chemin après vérification)
         cp -R ${{ github.workspace }}/app/* ${{ github.workspace }}/ipa/Payload
         
         # Créer le fichier .ipa
@@ -34,7 +34,7 @@ jobs:
         zip -r ${{ github.workspace }}/App.ipa .
 
     - name: Upload IPA
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: App
         path: ${{ github.workspace }}/App.ipa
