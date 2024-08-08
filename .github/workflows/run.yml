@@ -1,11 +1,7 @@
 name: Run
 
 on:
-  workflow_dispatch:
-    inputs:
-      deb:
-        description: "Direct URL to deb file"
-        required: true
+  workflow_dispatch
 
 jobs:
   run:
