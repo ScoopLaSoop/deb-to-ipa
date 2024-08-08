@@ -12,19 +12,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Convert deb to IPA
-        run: |
-          curl -L -o ${{ github.workspace }}/app.deb "${{ github.event.inputs.deb }}"
-          dpkg-deb -X ${{ github.workspace }}/app.deb ${{ github.workspace }}/app
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-          mkdir -p ${{ github.workspace }}/ipa/Payload
-          cp -R ${{ github.workspace }}/app/Applications/* ${{ github.workspace }}/ipa/Payload
-          
-          cd ${{ github.workspace }}/ipa
-          zip -r ${{ github.workspace }}/App.ipa .
+    - name: Convert deb to IPA
+      run: |
+        # Utiliser le fichier .deb local
+        cp pour\ lucas.deb ${{ github.workspace }}/app.deb
+        
+        # Extraire le fichier .deb
+        dpkg-deb -X ${{ github.workspace }}/app.deb ${{ github.workspace }}/app
 
-      - name: Upload IPA
-        uses: actions/upload-artifact@v4
-        with:
-          name: App
-          path: ${{ github.workspace }}/App.ipa
+        # Créer le dossier Payload
+        mkdir -p ${{ github.workspace }}/ipa/Payload
+        
+        # Copier le contenu de l'application dans le dossier Payload
+        cp -R ${{ github.workspace }}/app/Applications/* ${{ github.workspace }}/ipa/Payload
+        
+        # Créer le fichier .ipa
+        cd ${{ github.workspace }}/ipa
+        zip -r ${{ github.workspace }}/App.ipa .
+
+    - name: Upload IPA
+      uses: actions/upload-artifact@v2
+      with:
+        name: App
+        path: ${{ github.workspace }}/App.ipa
